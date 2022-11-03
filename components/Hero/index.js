@@ -7,8 +7,6 @@ const Hero = () => {
       <span className={styles.strawberry} />
       <span className={styles.meat} />
       <span className={styles.watermelon} />
-      <span />
-      <span />
       <div className={styles.title}>
         <h1>Seja você o Chef da sua casa</h1>
         <h2 className={styles.subtitle}>Receitas que vão surpreender!</h2>

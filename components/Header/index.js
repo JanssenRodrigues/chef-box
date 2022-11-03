@@ -3,17 +3,31 @@ import Button from "@mui/material/Button";
 import Icon from "@mui/material/Icon";
 import BlenderSharpIcon from "@mui/icons-material/BlenderSharp";
 import styles from "../../styles/Home.module.css";
+import { getLocalStorageData } from "../../utils";
+import Link from "next/link";
 
-const Header = () => {
+const Header = ({ isLogged = false, userLogin, setIsOpenLoginModal }) => {
   return (
     <header className={styles.header}>
-      <Icon component={BlenderSharpIcon} fontSize="large" />
+      <Link href="/">
+        <Icon component={BlenderSharpIcon} fontSize="large" href="/" />
+      </Link>
 
-      <span className={styles.headerTitle}>Chef Box</span>
+      <Link href="/">
+        <span className={styles.headerTitle}>Chef Box</span>
+      </Link>
 
-      <Button className={styles.loginButton} variant="contained">
-        Login
-      </Button>
+      {!isLogged ? (
+        <Button
+          className={styles.loginButton}
+          variant="contained"
+          onClick={() => setIsOpenLoginModal(true)}
+        >
+          Login
+        </Button>
+      ) : (
+        <p>{`Olá,  ${userLogin}`}</p>
+      )}
     </header>
   );
 };

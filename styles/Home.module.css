@@ -6,6 +6,18 @@
   text-align: center;
 }
 
+.main section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 50px 350px;
+  border-bottom: 1px solid rgb(195, 195, 195);
+}
+
+.main button {
+  height: 40px;
+}
+
 .header {
   display: flex;
   flex-direction: row;
@@ -88,6 +100,80 @@
 
 .title {
   width: 100%;
-  /* color: white; */
+  text-align: center;
   text-shadow: 1px 1px 1px #000;
+}
+
+.reasonsSection {
+  flex-wrap: wrap;
+  background-color: aliceblue;
+}
+
+.reasonsTitle {
+  width: 100%;
+  margin: 0 0 50px;
+}
+
+.reasonsFooter {
+  width: 100%;
+  text-align: center;
+}
+
+.reason {
+  width: 200px;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 50px;
+}
+
+.reason:hover {
+  box-shadow: 0 0 4px #000;
+  transition: 0.2s ease-in-out;
+}
+
+.insideTheBoxSection {
+  align-items: center;
+}
+
+.insideTheBoxSection .listItem {
+  margin-bottom: 25px;
+  list-style: circle;
+  text-align: left;
+}
+
+.insideTheBoxText, .insideTheBoxImage {
+  width: 50%;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding: 0 80px;
+  height: 80px;
+}
+
+.loginModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox {
+  min-width: 48%;
+}
+
+.preferencesOptions {
+  width: 33%;
+}
+
+.preferencesOptions label {
+  text-align: start;
 }
