@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import Reason from "../Reason";
 
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
@@ -19,7 +19,7 @@ const Reasons = () => {
       />
       <Reason
         icon={EventAvailableIcon}
-        text="Sem surpresas! Receba recorrentemente na data que desejar"
+        text="Sem surpresas! Receba mensalmente em seu endereço"
       />
       <Reason
         icon={SetMealIcon}
@@ -30,7 +30,9 @@ const Reasons = () => {
         text="Receba receitas do mundo inteiro e surpreenda!"
       />
       <div className={styles.reasonsFooter}>
-        <Button variant="outlined">Assine já</Button>
+        <Link href="/checkout">
+          <Button variant="outlined">Assine já</Button>
+        </Link>
       </div>
     </section>
   );

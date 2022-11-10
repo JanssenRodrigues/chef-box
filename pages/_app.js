@@ -7,12 +7,15 @@ import "../styles/globals.css";
 import LoginModal from "../components/LoginModal";
 
 function MyApp({ Component, pageProps }) {
-  const [data, setData] = useState({});
+  const [isLogged, setIsLogged] = useState(false);
+  const [userLogin, setUserLogin] = useState("");
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
   useEffect(() => {
-    setData(getLocalStorageData());
-  }, [data]);
+    setIsLogged(getLocalStorageData("isLogged") ?? false);
+    setUserLogin(getLocalStorageData("userLogin") ?? "");
+  }, []);
+
   return (
     <>
       <Head>
@@ -21,14 +24,24 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <LoginModal open={isOpenLoginModal} handleClose={setIsOpenLoginModal} />
+      <LoginModal
+        open={isOpenLoginModal}
+        handleClose={setIsOpenLoginModal}
+        setIsLogged={setIsLogged}
+        setUserLogin={setUserLogin}
+      />
 
       <Header
-        isLogged={data.isLogged}
-        userLogin={data.login}
+        isLogged={isLogged}
+        userLogin={userLogin}
         setIsOpenLoginModal={setIsOpenLoginModal}
       />
-      <Component {...pageProps} />
+
+      <Component
+        {...pageProps}
+        isLogged={isLogged}
+        setIsOpenLoginModal={setIsOpenLoginModal}
+      />
 
       <Footer />
     </>

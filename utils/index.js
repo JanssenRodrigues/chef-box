@@ -1,8 +1,10 @@
 export const getLocalStorageData = (key) => {
-  if (key) {
-    return window.localStorage.getItem(key);
+  if (typeof window !== "undefined") {
+    if (key) {
+      return window.localStorage.getItem(key);
+    }
+    return window.localStorage;
   }
-  return window.localStorage;
 };
 
 export const setLocalStorageData = (key, value) => {

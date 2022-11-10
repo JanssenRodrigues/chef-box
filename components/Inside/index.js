@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import styles from "../../styles/Home.module.css";
 
 const InsideTheBox = () => {
@@ -22,7 +22,9 @@ const InsideTheBox = () => {
             Caixas decoradas diferentes todos os meses
           </li>
         </ul>
-        <Button variant="outlined">Conheça nossos planos</Button>
+        <Link href="/checkout">
+          <Button variant="outlined">Conheça nossos planos</Button>
+        </Link>
       </div>
 
       <div className={styles.insideTheBoxImage}>
