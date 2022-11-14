@@ -104,6 +104,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
 
   const validateForm = () => {
     const formValuesObj = {
+      address,
       fullName,
       cardholderName,
       creditCardNumber,
@@ -357,7 +358,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
             )}
           </FormControl>
           <Button
-            className={styles.confirmSubscription}
+            className={styles.checkoutPaymentButton}
             variant="contained"
             onClick={() => {
               validateForm();

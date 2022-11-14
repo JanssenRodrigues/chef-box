@@ -290,6 +290,10 @@
   width: 49%;
 }
 
+.checkoutPaymentButton {
+  margin-top: 30px;
+}
+
 .confirmSubscription {
   flex-direction: column!important;
 }
