@@ -1,17 +1,52 @@
-import React, { useEffect } from "react";
-import Button from "@mui/material/Button";
-import Icon from "@mui/material/Icon";
-import BlenderSharpIcon from "@mui/icons-material/BlenderSharp";
+import React, { useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Link from "next/link";
+import {
+  Button,
+  Icon,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import BlenderSharpIcon from "@mui/icons-material/BlenderSharp";
+import EditIcon from "@mui/icons-material/Edit";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Header = ({ isLogged, userLogin, setIsOpenLoginModal }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(false);
+  };
+
   const renderLogin = () => {
     if (isLogged) {
       return (
-        <ul>
-          <li>{`Olá,  ${userLogin}`}</li>
-        </ul>
+        <menu>
+          <span>{`Olá,  ${userLogin}`}</span>
+
+          <Button id="basic-button" onClick={handleClick}>
+            <MenuIcon />
+          </Button>
+          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <MenuItem
+              onClick={handleClose}
+              component="a"
+              href="/user-preferences"
+            >
+              <ListItemIcon>
+                <EditIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Minhas preferências</ListItemText>
+            </MenuItem>
+          </Menu>
+        </menu>
       );
     }
     return (
@@ -32,7 +67,7 @@ const Header = ({ isLogged, userLogin, setIsOpenLoginModal }) => {
       </Link>
 
       <Link href="/">
-        <span className={styles.headerTitle}>Chef Box</span>
+        <span className={styles.headerTitle}>CHEF BOX</span>
       </Link>
 
       {renderLogin()}

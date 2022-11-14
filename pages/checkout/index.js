@@ -17,6 +17,8 @@ import {
 
 const Checkout = ({ setIsOpenLoginModal }) => {
   const router = useRouter();
+  const [address, setAddress] = useState("");
+  const [fullName, setFullName] = useState("");
   const [cardholderName, setCardHolderName] = useState("");
   const [creditCardNumber, setCreditCardNumber] = useState("");
   const [creditCardValidity, setCreditCardValidity] = useState("");
@@ -24,6 +26,8 @@ const Checkout = ({ setIsOpenLoginModal }) => {
   const [creditCardCPF, setCreditCardCPF] = useState("");
   const [terms, setTerms] = useState(false);
   const [errors, setErrors] = useState({
+    address: false,
+    fullName: false,
     cardholderName: false,
     creditCardNumber: false,
     creditCardValidity: false,
@@ -41,6 +45,22 @@ const Checkout = ({ setIsOpenLoginModal }) => {
       setIsOpenLoginModal(true);
     }
   }, []);
+
+  const validateAddress = () => {
+    const hasError = address === "";
+    setErrors({
+      ...errors,
+      address: hasError,
+    });
+  };
+
+  const validateFullName = () => {
+    const hasError = fullName === "";
+    setErrors({
+      ...errors,
+      fullName: hasError,
+    });
+  };
 
   const validateCardHoldName = () => {
     const hasError = cardholderName === "";
@@ -84,6 +104,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
 
   const validateForm = () => {
     const formValuesObj = {
+      fullName,
       cardholderName,
       creditCardNumber,
       creditCardValidity,
@@ -124,7 +145,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
   };
 
   return (
-    <div className={styles.checkoutProductContainer}>
+    <main className={styles.checkoutProductContainer}>
       <section className={styles.checkoutDescriptionSection}>
         <div className={styles.checkoutDescription}>
           <span>
@@ -153,9 +174,11 @@ const Checkout = ({ setIsOpenLoginModal }) => {
             </Link>
           </span>
         </div>
-        <div className={styles.checkoutProductImage}>
-          <img src="/checkout_food_box.png" alt="" />
-        </div>
+        <img
+          className={styles.checkoutProductImage}
+          src="/checkout_food_box.png"
+          alt=""
+        />
       </section>
 
       <section className={styles.checkoutPaymentSection}>
@@ -163,10 +186,48 @@ const Checkout = ({ setIsOpenLoginModal }) => {
           <FormControl
             fullWidth
             variant="standard"
+            error={errors.address}
+            sx={{ mb: 2 }}
+          >
+            <InputLabel>
+              Endereço completo(incluindo Estado e Cidade)
+            </InputLabel>
+            <Input
+              id="address"
+              variant="standard"
+              value={address}
+              onChange={({ target }) => setAddress(target.value)}
+              error={errors.address}
+              onBlur={() => validateAddress()}
+            />
+            {errors.address && formHelperText()}
+          </FormControl>
+
+          <FormControl
+            fullWidth
+            variant="standard"
+            error={errors.fullName}
+            sx={{ mb: 2 }}
+          >
+            <InputLabel>Nome e Sobrenome</InputLabel>
+            <Input
+              id="full-name"
+              variant="standard"
+              value={fullName}
+              onChange={({ target }) => setFullName(target.value)}
+              error={errors.fullName}
+              onBlur={() => validateFullName()}
+            />
+            {errors.fullName && formHelperText()}
+          </FormControl>
+
+          <FormControl
+            fullWidth
+            variant="standard"
             error={errors.cardholderName}
             sx={{ mb: 2 }}
           >
-            <InputLabel>Nome do titular</InputLabel>
+            <InputLabel>Nome do titular(impresso no cartão)</InputLabel>
             <Input
               id="cardholder-name"
               variant="standard"
@@ -306,11 +367,13 @@ const Checkout = ({ setIsOpenLoginModal }) => {
           </Button>
         </FormGroup>
 
-        <div className={styles.checkoutProductImage}>
-          <img src="/checkout_credit_card.png" alt="" />
-        </div>
+        <img
+          className={styles.checkoutProductImage}
+          src="/checkout_credit_card.png"
+          alt=""
+        />
       </section>
-    </div>
+    </main>
   );
 };
 

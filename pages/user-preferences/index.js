@@ -51,8 +51,8 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
 
   return (
     <main className={styles.main}>
-      <h2>Conte um pouco sobre você!</h2>
       <section className={styles.preferences}>
+        <h2>Conte um pouco sobre você!</h2>
         <div className={styles.preferencesOptions}>
           <p>Quais os tipos de alimentação que você prefere?</p>
           <FormGroup className={styles.formGroup}>
