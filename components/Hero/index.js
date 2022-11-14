@@ -9,7 +9,7 @@ const Hero = () => {
       <span className={styles.watermelon} />
       <div className={styles.title}>
         <h1>Seja você o Chef da sua casa</h1>
-        <h2 className={styles.subtitle}>Receitas que vão surpreender!</h2>
+        <h2 className={styles.subtitle}>Receitas que vão te surpreender!</h2>
       </div>
     </div>
   );
