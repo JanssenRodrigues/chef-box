@@ -25,9 +25,9 @@ export default function Home() {
       <main className={styles.main}>
         <Reasons />
 
-        <Revenues revenues={revenues} />
-
         <InsideTheBox />
+
+        <Revenues revenues={revenues} />
       </main>
     </>
   );

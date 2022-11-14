@@ -6,7 +6,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import RamenDiningIcon from "@mui/icons-material/RamenDining";
 import SetMealIcon from "@mui/icons-material/SetMeal";
-
+import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import styles from "../../styles/Home.module.css";
 
 const Reasons = () => {
@@ -18,16 +18,16 @@ const Reasons = () => {
         text="Receitas escritas por chefs de cozinha ao seu alcance"
       />
       <Reason
-        icon={EventAvailableIcon}
-        text="Sem surpresas! Receba mensalmente em seu endereço"
+        icon={RestaurantMenuIcon}
+        text="Receba ingredientes para 3 receitas surpresa aqui do site!"
       />
       <Reason
         icon={SetMealIcon}
         text="Ingredientes sempre frescos e de qualidade premium"
       />
       <Reason
-        icon={RamenDiningIcon}
-        text="Receba receitas do mundo inteiro e surpreenda!"
+        icon={EventAvailableIcon}
+        text="Sem surpresas! Receba mensalmente em seu endereço"
       />
       <div className={styles.reasonsFooter}>
         <Link href="/checkout">
