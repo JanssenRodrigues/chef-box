@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
   Input,
   InputAdornment,
@@ -14,9 +15,37 @@ import { setLocalStorageData } from "../../utils";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
+  const [loginError, setLoginError] = useState(null);
   const [login, setLoginInput] = useState("");
   const [password, setPasswordInput] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const fetchLogin = async () => {
+    const response = await fetch(
+      `http://localhost:3003/login?username=${login}&password=${password}`
+    );
+    const data = await response.json();
+
+    if (data.message) {
+      setLoginError(data.message);
+    }
+
+    if (data.user) {
+      setLocalStorageData("isLogged", true);
+      setLocalStorageData("userLogin", login);
+      setIsLogged(true);
+      setUserLogin(login);
+      handleClose(false);
+    }
+  };
+
+  const formHelperText = () => {
+    return (
+      <FormHelperText className={styles.formHelperText}>
+        {loginError}
+      </FormHelperText>
+    );
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -45,7 +74,7 @@ const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
       className={styles.loginModal}
     >
       <Box sx={style}>
-        <FormControl fullWidth variant="standard">
+        <FormControl fullWidth variant="standard" error={loginError}>
           <InputLabel htmlFor="standard-adornment-login">Login</InputLabel>
           <Input
             id="login"
@@ -56,7 +85,7 @@ const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
           />
         </FormControl>
 
-        <FormControl fullWidth variant="standard">
+        <FormControl fullWidth variant="standard" error={loginError}>
           <InputLabel htmlFor="standard-adornment-password">Senha</InputLabel>
           <Input
             id="standard-adornment-password"
@@ -77,16 +106,13 @@ const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
             }
             label="Senha"
           />
+          {loginError && formHelperText()}
         </FormControl>
         <Button
           className={styles.loginModalButton}
           variant="outlined"
           onClick={() => {
-            setLocalStorageData("isLogged", true);
-            setLocalStorageData("userLogin", login);
-            setIsLogged(true);
-            setUserLogin(login);
-            handleClose(false);
+            fetchLogin();
           }}
         >
           Entrar
