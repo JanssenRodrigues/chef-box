@@ -6,18 +6,28 @@ import { getLocalStorageData } from "../utils";
 import "../styles/globals.css";
 import LoginModal from "../components/LoginModal";
 
-function MyApp({ Component, pageProps }) {
+import { Provider } from "react-redux";
+import withRedux from "next-redux-wrapper";
+// import { initStore } from "../store";
+import rootReducer from "../reducers";
+import { createStore } from "redux";
+
+const store = createStore(rootReducer);
+
+import { storeWrapper } from "../store";
+
+const MyApp = ({ Component, ...rest }) => {
+  const { store, props } = storeWrapper.useWrappedStore(rest);
   const [isLogged, setIsLogged] = useState(false);
   const [userLogin, setUserLogin] = useState("");
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
-
   useEffect(() => {
-    setIsLogged(getLocalStorageData("isLogged") ?? false);
-    setUserLogin(getLocalStorageData("userLogin") ?? "");
+    // setIsLogged(getLocalStorageData("isLogged") ?? false);
+    // setUserLogin(getLocalStorageData("userLogin") ?? "");
   }, []);
 
   return (
-    <>
+    <Provider store={store}>
       <Head>
         <title>ChefBox</title>
         <meta name="description" content="ChefBox" />
@@ -38,14 +48,14 @@ function MyApp({ Component, pageProps }) {
       />
 
       <Component
-        {...pageProps}
+        {...props}
         isLogged={isLogged}
         setIsOpenLoginModal={setIsOpenLoginModal}
       />
 
       <Footer />
-    </>
+    </Provider>
   );
-}
+};
 
-export default MyApp;
+export default storeWrapper.withRedux(MyApp);

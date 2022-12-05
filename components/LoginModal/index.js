@@ -13,31 +13,40 @@ import {
 import styles from "../../styles/Home.module.css";
 import { setLocalStorageData } from "../../utils";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { fetchLogin, userSelector } from "../ducks/user";
+import { useDispatch, useSelector } from "react-redux";
 
 const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
+  const dispatch = useDispatch();
   const [loginError, setLoginError] = useState(null);
   const [login, setLoginInput] = useState("");
   const [password, setPasswordInput] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const fetchLogin = async () => {
-    const response = await fetch(
-      `http://localhost:3003/login?username=${login}&password=${password}`
-    );
-    const data = await response.json();
+  const { isLogged } = useSelector(userSelector);
 
-    if (data.message) {
-      setLoginError(data.message);
-    }
+  if (isLogged) {
+    handleClose(false);
+  }
+  // const fetchLogin = async () => {
 
-    if (data.user) {
-      setLocalStorageData("isLogged", true);
-      setLocalStorageData("userLogin", login);
-      setIsLogged(true);
-      setUserLogin(login);
-      handleClose(false);
-    }
-  };
+  //   const response = await fetch(
+  //     `http://localhost:3003/login?username=${login}&password=${password}`
+  //   );
+  //   const data = await response.json();
+
+  //   if (data.message) {
+  //     setLoginError(data.message);
+  //   }
+
+  //   if (data.user) {
+  //     setLocalStorageData("isLogged", true);
+  //     setLocalStorageData("userLogin", login);
+  //     setIsLogged(true);
+  //     setUserLogin(login);
+  //     handleClose(false);
+  //   }
+  // };
 
   const formHelperText = () => {
     return (
@@ -112,7 +121,7 @@ const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
           className={styles.loginModalButton}
           variant="outlined"
           onClick={() => {
-            fetchLogin();
+            dispatch(fetchLogin(login, password));
           }}
         >
           Entrar

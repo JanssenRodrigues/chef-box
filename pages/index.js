@@ -4,6 +4,8 @@ import Reasons from "../components/Reasons";
 import InsideTheBox from "../components/Inside";
 import { useEffect, useState } from "react";
 import Revenues from "../components/Revenues";
+import { useSelector } from "react-redux";
+import { userSelector } from "../components/ducks/user";
 
 export default function Home() {
   const [revenues, setRevenues] = useState(null);
@@ -18,6 +20,7 @@ export default function Home() {
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <>
       <Hero />

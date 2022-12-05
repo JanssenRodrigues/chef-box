@@ -12,10 +12,14 @@ import {
 import BlenderSharpIcon from "@mui/icons-material/BlenderSharp";
 import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useSelector } from "react-redux";
+import { userSelector } from "../ducks/user";
 
-const Header = ({ isLogged, userLogin, setIsOpenLoginModal }) => {
+const Header = ({ userLogin, setIsOpenLoginModal }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const { isLogged, userData } = useSelector(userSelector);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,7 +33,7 @@ const Header = ({ isLogged, userLogin, setIsOpenLoginModal }) => {
     if (isLogged) {
       return (
         <menu>
-          <span>{`Olá,  ${userLogin}`}</span>
+          <span>{`Olá,  ${userData.username}`}</span>
 
           <Button id="basic-button" onClick={handleClick}>
             <MenuIcon />
@@ -37,13 +41,15 @@ const Header = ({ isLogged, userLogin, setIsOpenLoginModal }) => {
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <MenuItem
               onClick={handleClose}
-              component="a"
-              href="/user-preferences"
+              // component="a"
+              // href="/user-preferences"
             >
-              <ListItemIcon>
+              <Link href="/user-preferences">
+                {/* <ListItemIcon>
                 <EditIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Minhas preferências</ListItemText>
+              </ListItemIcon> */}
+                <ListItemText>Minhas preferências</ListItemText>
+              </Link>
             </MenuItem>
           </Menu>
         </menu>
@@ -62,11 +68,11 @@ const Header = ({ isLogged, userLogin, setIsOpenLoginModal }) => {
 
   return (
     <header className={styles.header}>
-      <Link href="/">
+      <Link href="/" as={`/`}>
         <Icon component={BlenderSharpIcon} fontSize="large" href="/" />
       </Link>
 
-      <Link href="/">
+      <Link href="/" as={`/`}>
         <span className={styles.headerTitle}>CHEF BOX</span>
       </Link>
 

@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Link } from "@mui/material";
+import Link from "next/link";
+import { Button } from "@mui/material";
 import Reason from "../Reason";
 
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";

@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Link,
-} from "@mui/material";
-import { getLocalStorageData, setLocalStorageData } from "../../utils";
+import { Button, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import styles from "../../styles/Home.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchPreferences,
+  savePreferences,
+  userSelector,
+} from "../../components/ducks/user";
 
 export default function UserPreferences({ setIsOpenLoginModal }) {
+  const [firstAccess, setFirstAccess] = useState(false);
   const [userPreferences, setUserPreferences] = useState({});
-
   const {
     onivora = false,
     alimentosLacteos = false,
@@ -25,27 +24,40 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
     ovolactovegetariana = false,
   } = userPreferences;
 
+  const { userData, isLogged, preferences } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  // console.log("PREFERENCES: ", preferences);
+  // console.log("firstAccess: ", firstAccess);
+
   const onChange = (checked) => {
     setUserPreferences({
       ...userPreferences,
       ...checked,
     });
-    setLocalStorageData(
-      "userPreferences",
-      JSON.stringify({
-        ...userPreferences,
-        ...checked,
-      })
-    );
   };
 
   useEffect(() => {
-    const localStorageData = getLocalStorageData("userPreferences");
-    if (localStorageData) {
-      setUserPreferences(JSON.parse(localStorageData));
+    if (userData?.id) {
+      dispatch(fetchPreferences(userData.id));
     }
-    if (!getLocalStorageData("isLogged")) {
-      setIsOpenLoginModal(true);
+
+    // if (!isLogged) {
+    //   setIsOpenLoginModal(true);
+    // }
+  }, []);
+
+  useEffect(() => {
+    const isFirstAccess = preferences?.message ? true : false;
+    setFirstAccess(isFirstAccess);
+  }, [userData]);
+
+  useEffect(() => {
+    console.log("preferences", preferences);
+    if (!firstAccess && preferences) {
+      console.log(JSON.parse(preferences.content));
+      console.log(preferences.content);
+
+      setUserPreferences(JSON.parse(preferences.content));
     }
   }, []);
 
@@ -188,11 +200,22 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
             />
           </FormGroup>
         </div>
-        <Link href="/">
-          <Button className={styles.formButton} variant="contained">
-            Salvar
-          </Button>
-        </Link>
+        <Button
+          className={styles.formButton}
+          variant="contained"
+          disabled={!isLogged}
+          onClick={() =>
+            dispatch(
+              savePreferences({
+                userId: userData.id,
+                preferences: JSON.stringify(userPreferences),
+                firstAccess,
+              })
+            )
+          }
+        >
+          Salvar
+        </Button>
       </section>
     </main>
   );
