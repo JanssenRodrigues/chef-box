@@ -32,10 +32,11 @@ export const fetchPreferences = (id) => async (dispatch) => {
     );
     const data = await response.json();
     if (data.preferences) {
-      console.log("DATA: ", data);
-      dispatch(action("USER_PREFERENCES", JSON.parse(data.preferences)));
+      dispatch(
+        action("USER_PREFERENCES", JSON.parse(data.preferences.content))
+      );
     } else {
-      dispatch(action("USER_PREFERENCES"));
+      dispatch(action("USER_PREFERENCES", { message: data.message }));
     }
   } catch (err) {
     console.log(err);
@@ -86,7 +87,7 @@ export const isLogged = (state = false, { type, payload }) => {
   }
 };
 
-export const preferences = (state = null, { type, payload }) => {
+export const preferences = (state = {}, { type, payload }) => {
   switch (type) {
     case HYDRATE:
       return { ...state, ...payload.settings };

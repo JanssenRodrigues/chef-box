@@ -3,14 +3,16 @@ import { Button, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import styles from "../../styles/Home.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  action,
   fetchPreferences,
   savePreferences,
   userSelector,
 } from "../../components/ducks/user";
 
 export default function UserPreferences({ setIsOpenLoginModal }) {
-  const [firstAccess, setFirstAccess] = useState(false);
-  const [userPreferences, setUserPreferences] = useState({});
+  // const [firstAccess, setFirstAccess] = useState(false);
+
+  const { userData, isLogged, preferences } = useSelector(userSelector);
   const {
     onivora = false,
     alimentosLacteos = false,
@@ -22,18 +24,12 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
     vegana = false,
     ovos = false,
     ovolactovegetariana = false,
-  } = userPreferences;
+  } = preferences;
 
-  const { userData, isLogged, preferences } = useSelector(userSelector);
   const dispatch = useDispatch();
-  // console.log("PREFERENCES: ", preferences);
-  // console.log("firstAccess: ", firstAccess);
 
   const onChange = (checked) => {
-    setUserPreferences({
-      ...userPreferences,
-      ...checked,
-    });
+    dispatch(action("USER_PREFERENCES", { ...preferences, ...checked }));
   };
 
   useEffect(() => {
@@ -41,25 +37,15 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
       dispatch(fetchPreferences(userData.id));
     }
 
-    // if (!isLogged) {
-    //   setIsOpenLoginModal(true);
-    // }
-  }, []);
-
-  useEffect(() => {
-    const isFirstAccess = preferences?.message ? true : false;
-    setFirstAccess(isFirstAccess);
-  }, [userData]);
-
-  useEffect(() => {
-    console.log("preferences", preferences);
-    if (!firstAccess && preferences) {
-      console.log(JSON.parse(preferences.content));
-      console.log(preferences.content);
-
-      setUserPreferences(JSON.parse(preferences.content));
+    if (!isLogged) {
+      setIsOpenLoginModal(true);
     }
   }, []);
+
+  // useEffect(() => {
+  //   const isFirstAccess = preferences?.message ? true : false;
+  //   setFirstAccess(isFirstAccess);
+  // }, [userData]);
 
   return (
     <main className={styles.main}>
@@ -208,7 +194,7 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
             dispatch(
               savePreferences({
                 userId: userData.id,
-                preferences: JSON.stringify(userPreferences),
+                preferences: JSON.stringify(preferences),
                 firstAccess,
               })
             )
