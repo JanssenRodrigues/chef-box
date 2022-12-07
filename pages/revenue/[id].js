@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "../../styles/Home.module.css";
 import {
+  getArticleReviews,
   getRevenueByUrl,
   getUserReview,
   revenuesSelector,
@@ -24,10 +25,7 @@ const Revenue = () => {
     if (router.query.id) {
       dispatch(getRevenueByUrl(router.query.id));
     }
-  }, [router.query.id]);
-
-  useEffect(() => {
-    if (user) {
+    if (user && article) {
       dispatch(
         getUserReview({
           articleId: article.id,
@@ -35,7 +33,15 @@ const Revenue = () => {
         })
       );
     }
-  }, [user]);
+
+    if (article) {
+      dispatch(
+        getArticleReviews({
+          articleId: article.id,
+        })
+      );
+    }
+  }, [router.query.id]);
 
   if (!article) {
     return null;
@@ -44,6 +50,8 @@ const Revenue = () => {
   const { description, ingredients, preparation } = JSON.parse(
     article?.content
   );
+
+  console.log(reviews);
 
   return (
     <div className={styles.revenue}>
@@ -77,7 +85,8 @@ const Revenue = () => {
           })}
         </ul>
       </div>
-      {user.isLogged && (
+
+      {userReview === null && user.isLogged && (
         <div className={styles.revenueReviews}>
           <h2>Avaliar receita</h2>
           <Rating
@@ -117,19 +126,25 @@ const Revenue = () => {
         </div>
       )}
 
-      <div className={styles.revenueReviews}>
-        <h2>Avaliações</h2>
-        <ul>
-          {/* {avaliations.map((step, key) => {
-            return (
-              <li key={key}>
-                <span className={styles.revenueOrder}>{key + 1}</span>
-                {step}
-              </li>
-            );
-          })} */}
-        </ul>
-      </div>
+      {reviews.length > 0 && (
+        <div className={styles.revenueReviews}>
+          <h2>Avaliações</h2>
+          <ul>
+            {reviews.map((review, key) => {
+              return (
+                <li key={key}>
+                  <strong>{review.username}</strong>
+                  <Rating name="readOnly" readOnly value={review.rate} />
+                  <br />
+                  <span>{review.comment}</span>
+                  <br />
+                  <br />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
