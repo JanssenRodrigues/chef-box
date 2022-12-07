@@ -1,40 +1,38 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "../../styles/Home.module.css";
+import {
+  getRevenueByUrl,
+  revenuesSelector,
+} from "../../components/ducks/revenues";
+import { useDispatch, useSelector } from "react-redux";
 
 const Revenue = () => {
-  const [revenue, setRevenue] = useState(null);
+  const dispatch = useDispatch();
+  const { article } = useSelector(revenuesSelector);
   const router = useRouter();
-
-  const fetchData = async () => {
-    const response = await fetch(`/api/revenue/${router.query.id}`);
-
-    const revenueData = await response.json();
-
-    setRevenue(revenueData);
-    return;
-  };
 
   useEffect(() => {
     if (router.query.id) {
-      fetchData();
+      dispatch(getRevenueByUrl(router.query.id));
     }
   }, [router.query.id]);
 
-  if (!revenue) {
+  if (!article) {
     return <div>ERROR</div>;
   }
+  const { description, ingredients, preparation } = JSON.parse(article.content);
 
   return (
     <div className={styles.revenue}>
       <div className={styles.revenueDescription}>
-        <h1>{revenue.description.title.toUpperCase()}</h1>
-        <p>{revenue.description.text}</p>
+        <h1>{description.title.toUpperCase()}</h1>
+        <p>{description.text}</p>
       </div>
       <div className={styles.revenueIngredients}>
         <h2>Ingredientes</h2>
         <ul>
-          {revenue.ingredients.map(({ name, qtt }) => {
+          {ingredients.map(({ name, qtt }) => {
             return (
               <li
                 key={name}
@@ -47,7 +45,7 @@ const Revenue = () => {
       <div className={styles.revenuePreparation}>
         <h2>Modo de preparo</h2>
         <ul>
-          {revenue.preparation.map((step, key) => {
+          {preparation.map((step, key) => {
             return (
               <li key={key}>
                 <span className={styles.revenueOrder}>{key + 1}</span>
