@@ -3,14 +3,22 @@ import { useRouter } from "next/router";
 import styles from "../../styles/Home.module.css";
 import {
   getRevenueByUrl,
+  getUserReview,
   revenuesSelector,
+  saveReview,
 } from "../../components/ducks/revenues";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, Rating, TextField } from "@mui/material";
+import { userSelector } from "../../components/ducks/user";
 
 const Revenue = () => {
-  const dispatch = useDispatch();
-  const { article } = useSelector(revenuesSelector);
+  const [rate, setRate] = useState(null);
+  const [textarea, setTextarea] = useState("");
+
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { article, userReview, reviews } = useSelector(revenuesSelector);
+  const user = useSelector(userSelector);
 
   useEffect(() => {
     if (router.query.id) {
@@ -18,10 +26,24 @@ const Revenue = () => {
     }
   }, [router.query.id]);
 
+  useEffect(() => {
+    if (user) {
+      dispatch(
+        getUserReview({
+          articleId: article.id,
+          username: user.userData.username,
+        })
+      );
+    }
+  }, [user]);
+
   if (!article) {
-    return <div>ERROR</div>;
+    return null;
   }
-  const { description, ingredients, preparation } = JSON.parse(article.content);
+
+  const { description, ingredients, preparation } = JSON.parse(
+    article?.content
+  );
 
   return (
     <div className={styles.revenue}>
@@ -53,6 +75,59 @@ const Revenue = () => {
               </li>
             );
           })}
+        </ul>
+      </div>
+      {user.isLogged && (
+        <div className={styles.revenueReviews}>
+          <h2>Avaliar receita</h2>
+          <Rating
+            name="simple-controlled"
+            value={rate}
+            onChange={(event, newValue) => {
+              setRate(newValue);
+            }}
+          />
+          <br />
+          <br />
+          <TextField
+            id="outlined-multiline-static"
+            label="Comentário"
+            multiline
+            rows={4}
+            value={textarea}
+            onChange={(e) => setTextarea(e.target.value)}
+          />
+          <br />
+          <br />
+          <Button
+            variant="contained"
+            onClick={() =>
+              dispatch(
+                saveReview({
+                  rate,
+                  comment: textarea,
+                  articleId: article.id,
+                  username: user.userData.username,
+                })
+              )
+            }
+          >
+            Enviar avaliação
+          </Button>
+        </div>
+      )}
+
+      <div className={styles.revenueReviews}>
+        <h2>Avaliações</h2>
+        <ul>
+          {/* {avaliations.map((step, key) => {
+            return (
+              <li key={key}>
+                <span className={styles.revenueOrder}>{key + 1}</span>
+                {step}
+              </li>
+            );
+          })} */}
         </ul>
       </div>
     </div>

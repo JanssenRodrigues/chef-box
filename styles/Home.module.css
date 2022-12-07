@@ -312,7 +312,8 @@
 
 .revenueDescription,
 .revenueIngredients,
-.revenuePreparation {
+.revenuePreparation,
+.revenueReviews {
   text-align: left;
   margin-bottom: 25px;
   padding: 25px;
