@@ -2,7 +2,10 @@ import { combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 
 // SELECTORS
-export const ordersSelector = (state) => state.orders;
+export const ordersSelector = (state) => {
+  console.log("STATE: ", state);
+  return state.orders;
+};
 
 // ACTIONS
 export const action = (type, payload = null) => ({ type, payload });
@@ -13,7 +16,7 @@ export const getOrders = (userId) => async (dispatch) => {
       `http://localhost:3003/orders?userId=${userId}`
     );
     const data = await response.json();
-    console.log(data);
+    dispatch(action("SET_ORDERS", data.orders));
   } catch (err) {
     console.log(err);
   }
@@ -56,7 +59,7 @@ export const createOrder = (order, userId) => async (dispatch) => {
   }
 };
 
-export const orders = (state = null, { type, payload }) => {
+export const list = (state = [], { type, payload }) => {
   switch (type) {
     case HYDRATE:
       return { ...state, ...payload.settings };
@@ -68,5 +71,5 @@ export const orders = (state = null, { type, payload }) => {
 };
 
 export default combineReducers({
-  orders,
+  list,
 });
