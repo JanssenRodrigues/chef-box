@@ -27,6 +27,7 @@ const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
 
   if (isLogged) {
     handleClose(false);
+    return null;
   }
   // const fetchLogin = async () => {
 

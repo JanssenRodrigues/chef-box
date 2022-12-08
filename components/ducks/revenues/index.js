@@ -24,6 +24,11 @@ export const getRevenueByUrl = (url) => async (dispatch) => {
     const data = await response.json();
 
     dispatch(action("SET_REVENUE_ARTICLE", data.revenue));
+    dispatch(
+      getArticleReviews({
+        articleId: data.revenue.id,
+      })
+    );
   } catch (err) {
     console.log(err);
   }

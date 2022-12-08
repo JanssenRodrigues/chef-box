@@ -25,7 +25,7 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
     ovos = false,
     ovolactovegetariana = false,
   } = preferences;
-
+  console.log(preferences);
   const dispatch = useDispatch();
 
   const onChange = (checked) => {
@@ -41,11 +41,6 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
       setIsOpenLoginModal(true);
     }
   }, []);
-
-  // useEffect(() => {
-  //   const isFirstAccess = preferences?.message ? true : false;
-  //   setFirstAccess(isFirstAccess);
-  // }, [userData]);
 
   return (
     <main className={styles.main}>
@@ -195,7 +190,7 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
               savePreferences({
                 userId: userData.id,
                 preferences: JSON.stringify(preferences),
-                firstAccess,
+                method: "PATCH",
               })
             )
           }

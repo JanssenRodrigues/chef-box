@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getLocalStorageData } from "../../utils";
 
 import styles from "../../styles/Home.module.css";
 import {
+  Alert,
   Button,
   Checkbox,
   FormControl,
@@ -13,17 +13,26 @@ import {
   Input,
   InputLabel,
   Link,
+  Snackbar,
 } from "@mui/material";
+import { userSelector } from "../../components/ducks/user";
+import { useDispatch, useSelector } from "react-redux";
+import { action, createOrder } from "../../components/ducks/orders";
+import { notificationSelector } from "../../components/ducks/notifications";
 
 const Checkout = ({ setIsOpenLoginModal }) => {
+  const handleClose = () => {
+    dispatch(action("SET_IS_OPEN_SNACKBAR", false));
+  };
+
   const router = useRouter();
-  const [address, setAddress] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [cardholderName, setCardHolderName] = useState("");
-  const [creditCardNumber, setCreditCardNumber] = useState("");
-  const [creditCardValidity, setCreditCardValidity] = useState("");
-  const [creditCardCVV, setCreditCardCVV] = useState("");
-  const [creditCardCPF, setCreditCardCPF] = useState("");
+  const [address, setAddress] = useState("Rua Sete");
+  const [fullName, setFullName] = useState("Janssen Rodrigues");
+  const [cardholderName, setCardHolderName] = useState("Janssen R Lima");
+  const [creditCardNumber, setCreditCardNumber] = useState("5555555555555555");
+  const [creditCardValidity, setCreditCardValidity] = useState("12/29");
+  const [creditCardCVV, setCreditCardCVV] = useState("123");
+  const [creditCardCPF, setCreditCardCPF] = useState("17171717171");
   const [terms, setTerms] = useState(false);
   const [errors, setErrors] = useState({
     address: false,
@@ -36,15 +45,21 @@ const Checkout = ({ setIsOpenLoginModal }) => {
     terms: null,
   });
 
+  const dispatch = useDispatch();
+  const { user, userData, isLogged } = useSelector(userSelector);
+  const { snackbar, isOpenNotification } = useSelector(notificationSelector);
+
   useEffect(() => {
-    if (!getLocalStorageData("userPreferences")) {
-      router.push("/user-preferences");
-      return;
-    }
-    if (!getLocalStorageData("isLogged")) {
-      setIsOpenLoginModal(true);
+    if (user) {
+      dispatch(fetchPreferences(userData.id));
     }
   }, []);
+
+  useEffect(() => {
+    if (isLogged) {
+      setIsOpenLoginModal(true);
+    }
+  }, [isLogged]);
 
   const validateAddress = () => {
     const hasError = address === "";
@@ -133,7 +148,21 @@ const Checkout = ({ setIsOpenLoginModal }) => {
     });
 
     if (hasFormError.length === 0) {
-      router.push("/subscription-confirmation");
+      dispatch(
+        createOrder(
+          {
+            address,
+            fullName,
+            cardholderName,
+            creditCardNumber,
+            creditCardValidity,
+            creditCardCVV,
+            creditCardCPF,
+          },
+          userData.id
+        )
+      );
+      // router.push("/subscription-confirmation");
     }
   };
 
@@ -147,6 +176,20 @@ const Checkout = ({ setIsOpenLoginModal }) => {
 
   return (
     <main className={styles.checkoutProductContainer}>
+      <Snackbar
+        open={isOpenNotification}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        autoHideDuration={3000}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={snackbar.type}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
       <section className={styles.checkoutDescriptionSection}>
         <div className={styles.checkoutDescription}>
           <span>

@@ -36,7 +36,13 @@ export const fetchPreferences = (id) => async (dispatch) => {
         action("USER_PREFERENCES", JSON.parse(data.preferences.content))
       );
     } else {
-      dispatch(action("USER_PREFERENCES", { message: data.message }));
+      dispatch(
+        savePreferences({
+          userId: id,
+          preferences: JSON.stringify({}),
+          method: "POST",
+        })
+      );
     }
   } catch (err) {
     console.log(err);
@@ -44,9 +50,8 @@ export const fetchPreferences = (id) => async (dispatch) => {
 };
 
 export const savePreferences =
-  ({ userId, preferences, firstAccess }) =>
+  ({ userId, preferences, method }) =>
   async (dispatch) => {
-    const method = firstAccess ? "POST" : "PATCH";
     try {
       const response = await fetch(
         `http://localhost:3003/user-preferences?userId=${userId}&preferences=${preferences}`,
@@ -55,6 +60,7 @@ export const savePreferences =
         }
       );
       const data = await response.json();
+      console.log(data);
       console.log("SAVED");
     } catch (err) {
       console.log(err);

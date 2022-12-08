@@ -33,15 +33,17 @@ const Revenue = () => {
         })
       );
     }
-
-    if (article) {
-      dispatch(
-        getArticleReviews({
-          articleId: article.id,
-        })
-      );
-    }
   }, [router.query.id]);
+
+  // useEffect(() => {
+  //   if (article) {
+  //     dispatch(
+  //       getArticleReviews({
+  //         articleId: article.id,
+  //       })
+  //     );
+  //   }
+  // }, []);
 
   if (!article) {
     return null;
@@ -51,7 +53,7 @@ const Revenue = () => {
     article?.content
   );
 
-  console.log(reviews);
+  console.log("REVIEWS: ", reviews);
 
   return (
     <div className={styles.revenue}>
@@ -85,7 +87,7 @@ const Revenue = () => {
           })}
         </ul>
       </div>
-
+      {console.log("USER REVIEW: ", userReview)}
       {userReview === null && user.isLogged && (
         <div className={styles.revenueReviews}>
           <h2>Avaliar receita</h2>

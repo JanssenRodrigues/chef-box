@@ -39,16 +39,14 @@ const Header = ({ userLogin, setIsOpenLoginModal }) => {
             <MenuIcon />
           </Button>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <MenuItem
-              onClick={handleClose}
-              // component="a"
-              // href="/user-preferences"
-            >
+            <MenuItem onClick={handleClose}>
               <Link href="/user-preferences">
-                {/* <ListItemIcon>
-                <EditIcon fontSize="small" />
-              </ListItemIcon> */}
                 <ListItemText>Minhas preferências</ListItemText>
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/orders">
+                <ListItemText>Meus pedidos</ListItemText>
               </Link>
             </MenuItem>
           </Menu>
