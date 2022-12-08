@@ -2,10 +2,7 @@ import { combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 
 // SELECTORS
-export const ordersSelector = (state) => {
-  console.log("STATE: ", state);
-  return state.orders;
-};
+export const ordersSelector = (state) => state.orders;
 
 // ACTIONS
 export const action = (type, payload = null) => ({ type, payload });

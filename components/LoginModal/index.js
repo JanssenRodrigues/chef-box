@@ -11,12 +11,11 @@ import {
   Modal,
 } from "@mui/material";
 import styles from "../../styles/Home.module.css";
-import { setLocalStorageData } from "../../utils";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { fetchLogin, userSelector } from "../ducks/user";
 import { useDispatch, useSelector } from "react-redux";
 
-const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
+const LoginModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const [loginError, setLoginError] = useState(null);
   const [login, setLoginInput] = useState("");
@@ -29,25 +28,6 @@ const LoginModal = ({ open, handleClose, setIsLogged, setUserLogin }) => {
     handleClose(false);
     return null;
   }
-  // const fetchLogin = async () => {
-
-  //   const response = await fetch(
-  //     `http://localhost:3003/login?username=${login}&password=${password}`
-  //   );
-  //   const data = await response.json();
-
-  //   if (data.message) {
-  //     setLoginError(data.message);
-  //   }
-
-  //   if (data.user) {
-  //     setLocalStorageData("isLogged", true);
-  //     setLocalStorageData("userLogin", login);
-  //     setIsLogged(true);
-  //     setUserLogin(login);
-  //     handleClose(false);
-  //   }
-  // };
 
   const formHelperText = () => {
     return (

@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 import { userSelector } from "../ducks/user";
 
-const Header = ({ userLogin, setIsOpenLoginModal }) => {
+const Header = ({ setIsOpenLoginModal }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 

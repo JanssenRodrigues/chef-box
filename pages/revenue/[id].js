@@ -42,8 +42,6 @@ const Revenue = () => {
     article?.content
   );
 
-  console.log("REVIEWS: ", reviews);
-
   return (
     <div className={styles.revenue}>
       <div className={styles.revenueDescription}>
@@ -76,7 +74,7 @@ const Revenue = () => {
           })}
         </ul>
       </div>
-      {console.log("USER REVIEW: ", userReview)}
+
       {userReview === null && user.isLogged && (
         <div className={styles.revenueReviews}>
           <h2>Avaliar receita</h2>

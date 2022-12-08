@@ -21,18 +21,9 @@ const MyApp = ({ Component, ...rest }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <LoginModal
-        open={isOpenLoginModal}
-        handleClose={setIsOpenLoginModal}
-        setIsLogged={setIsLogged}
-        setUserLogin={setUserLogin}
-      />
+      <LoginModal open={isOpenLoginModal} handleClose={setIsOpenLoginModal} />
 
-      <Header
-        isLogged={isLogged}
-        userLogin={userLogin}
-        setIsOpenLoginModal={setIsOpenLoginModal}
-      />
+      <Header setIsOpenLoginModal={setIsOpenLoginModal} />
 
       <Component
         {...props}

@@ -53,6 +53,11 @@ const Orders = () => {
             </p>
 
             <p>
+              <strong>Data do pedido: </strong>
+              {orderDate.toLocaleDateString("pt-br")}
+            </p>
+
+            <p>
               <strong>Status: </strong>
               {status ? "Entregue" : "À caminho"}
             </p>

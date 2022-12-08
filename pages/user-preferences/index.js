@@ -8,8 +8,10 @@ import {
   savePreferences,
   userSelector,
 } from "../../components/ducks/user";
+import { Router, useRouter } from "next/router";
 
-export default function UserPreferences({ setIsOpenLoginModal }) {
+export default function UserPreferences() {
+  const router = useRouter();
   const { userData, isLogged, preferences } = useSelector(userSelector);
   const {
     onivora = false,
@@ -23,7 +25,7 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
     ovos = false,
     ovolactovegetariana = false,
   } = preferences;
-  console.log(preferences);
+
   const dispatch = useDispatch();
 
   const onChange = (checked) => {
@@ -31,12 +33,11 @@ export default function UserPreferences({ setIsOpenLoginModal }) {
   };
 
   useEffect(() => {
+    if (!isLogged) {
+      router.push("/");
+    }
     if (userData?.id) {
       dispatch(fetchPreferences(userData.id));
-    }
-
-    if (!isLogged) {
-      setIsOpenLoginModal(true);
     }
   }, []);
 

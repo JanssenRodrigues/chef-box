@@ -21,18 +21,15 @@ import { action, createOrder } from "../../components/ducks/orders";
 import { notificationSelector } from "../../components/ducks/notifications";
 
 const Checkout = ({ setIsOpenLoginModal }) => {
-  const handleClose = () => {
-    dispatch(action("SET_IS_OPEN_SNACKBAR", false));
-  };
-
   const router = useRouter();
-  const [address, setAddress] = useState("Rua Sete");
-  const [fullName, setFullName] = useState("Janssen Rodrigues");
-  const [cardholderName, setCardHolderName] = useState("Janssen R Lima");
-  const [creditCardNumber, setCreditCardNumber] = useState("5555555555555555");
-  const [creditCardValidity, setCreditCardValidity] = useState("12/29");
-  const [creditCardCVV, setCreditCardCVV] = useState("123");
-  const [creditCardCPF, setCreditCardCPF] = useState("17171717171");
+  const dispatch = useDispatch();
+  const [address, setAddress] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [cardholderName, setCardHolderName] = useState("");
+  const [creditCardNumber, setCreditCardNumber] = useState("");
+  const [creditCardValidity, setCreditCardValidity] = useState("");
+  const [creditCardCVV, setCreditCardCVV] = useState("");
+  const [creditCardCPF, setCreditCardCPF] = useState("");
   const [terms, setTerms] = useState(false);
   const [errors, setErrors] = useState({
     address: false,
@@ -45,9 +42,13 @@ const Checkout = ({ setIsOpenLoginModal }) => {
     terms: null,
   });
 
-  const dispatch = useDispatch();
   const { user, userData, isLogged } = useSelector(userSelector);
   const { snackbar, isOpenNotification } = useSelector(notificationSelector);
+
+  const handleClose = () => {
+    dispatch(action("SET_IS_OPEN_SNACKBAR", false));
+    router.push("/");
+  };
 
   useEffect(() => {
     if (user) {
@@ -56,7 +57,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
   }, []);
 
   useEffect(() => {
-    if (isLogged) {
+    if (!isLogged) {
       setIsOpenLoginModal(true);
     }
   }, [isLogged]);
@@ -162,7 +163,6 @@ const Checkout = ({ setIsOpenLoginModal }) => {
           userData.id
         )
       );
-      // router.push("/subscription-confirmation");
     }
   };
 
@@ -180,7 +180,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
         open={isOpenNotification}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
       >
         <Alert
           onClose={handleClose}
@@ -406,6 +406,7 @@ const Checkout = ({ setIsOpenLoginModal }) => {
             onClick={() => {
               validateForm();
             }}
+            disabled={isOpenNotification}
           >
             Confirmar assinatura
           </Button>
