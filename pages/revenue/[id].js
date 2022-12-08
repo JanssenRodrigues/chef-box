@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "../../styles/Home.module.css";
 import {
-  getArticleReviews,
   getRevenueByUrl,
   getUserReview,
   revenuesSelector,
@@ -34,16 +33,6 @@ const Revenue = () => {
       );
     }
   }, [router.query.id]);
-
-  // useEffect(() => {
-  //   if (article) {
-  //     dispatch(
-  //       getArticleReviews({
-  //         articleId: article.id,
-  //       })
-  //     );
-  //   }
-  // }, []);
 
   if (!article) {
     return null;

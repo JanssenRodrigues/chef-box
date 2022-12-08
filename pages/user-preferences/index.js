@@ -10,8 +10,6 @@ import {
 } from "../../components/ducks/user";
 
 export default function UserPreferences({ setIsOpenLoginModal }) {
-  // const [firstAccess, setFirstAccess] = useState(false);
-
   const { userData, isLogged, preferences } = useSelector(userSelector);
   const {
     onivora = false,

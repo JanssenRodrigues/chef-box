@@ -45,9 +45,7 @@ export const saveReview =
         }
       );
       const data = await response.json();
-      //   console.log("DATA", data);
       console.log("REVIEW SAVED");
-      //   dispatch(action("SAVE_REVIEW_SUCCESS", data.review));
     } catch (err) {
       console.log(err);
     }
@@ -61,7 +59,6 @@ export const getUserReview =
         `http://localhost:3003/reviews/user?articleId=${articleId}&username=${username}`
       );
       const data = await response.json();
-      // console.log("DATA", data);
       dispatch(action("SET_USER_REVIEW", data.review));
     } catch (err) {
       console.log(err);
@@ -76,7 +73,7 @@ export const getArticleReviews =
         `http://localhost:3003/reviews/article/${articleId}`
       );
       const data = await response.json();
-      console.log("DATA", data);
+
       dispatch(action("SET_REVENUE_REVIEWS", data.reviews));
     } catch (err) {
       console.log(err);

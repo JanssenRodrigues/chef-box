@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Link from "next/link";
-import {
-  Button,
-  Icon,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Button, Icon, ListItemText, Menu, MenuItem } from "@mui/material";
 import BlenderSharpIcon from "@mui/icons-material/BlenderSharp";
-import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 import { userSelector } from "../ducks/user";

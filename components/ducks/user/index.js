@@ -60,7 +60,7 @@ export const savePreferences =
         }
       );
       const data = await response.json();
-      console.log(data);
+
       console.log("SAVED");
     } catch (err) {
       console.log(err);
